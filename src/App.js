@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './App.module.css';
 import initialImage from './image-placeholder.png';
 import IconUpload from './svg/IconUpload';
+import IconDownload from './svg/IconDownload';
 
 function App() {
   const [brightness, setBrightness] = React.useState(100); // 0-200%
@@ -35,6 +36,26 @@ function App() {
     setInvert(0);
     setSaturate(100);
     setSepia(0);
+  };
+
+  const handleDownloadImage = () => {
+    const canvasElement = document.createElement('canvas');
+    const imageElement = new Image();
+    imageElement.src = image ? image : initialImage;
+    console.log(imageElement);
+    imageElement.onload = () => {
+      canvasElement.width = imageElement.width;
+      canvasElement.height = imageElement.height;
+      const context = canvasElement.getContext('2d');
+      context.filter = `brightness(${brightness}%) grayscale(${grayscale}%) contrast(${contrast}%) hue-rotate(${hueRotate}deg) invert(${invert}%) saturate(${saturate}%) sepia(${sepia}%)`;
+      context.drawImage(imageElement, 0, 0);
+      console.log(context);
+      const linkElement = document.createElement('a');
+      linkElement.download = 'filtered-image.jpg';
+      linkElement.href = canvasElement.toDataURL('image/jpg');
+      console.log(linkElement);
+      linkElement.click();
+    };
   };
 
   return (
@@ -72,9 +93,29 @@ function App() {
               alt='EditableImage'
             />
           </div>
+          <button
+            className={`${styles.resetButton} ${styles.downloadButton}`}
+            onClick={handleDownloadImage}
+          >
+            <p>download</p>
+            <IconDownload />
+          </button>
         </div>
         <div className={styles.filterSide}>
-          <h3 className={styles.filterOptionsTitle}>⚙️ Filter Options</h3>
+          <div className={styles.resetButtonTopContainer}>
+            <h3 className={styles.filterOptionsTitle}>
+              <span className={styles.extendedTitleText}>
+                ⚙️ Filter Options
+              </span>
+              <span className={styles.collapsedTitleText}>⚙️ Filters</span>
+            </h3>
+            <button
+              onClick={handleResetFilters}
+              className={`${styles.resetButton} ${styles.resetButtonTop}`}
+            >
+              reset filters
+            </button>
+          </div>
           <div className={styles.filterContainer}>
             <label className={styles.filterLabel}>
               <p>Brightness</p>
@@ -181,7 +222,9 @@ function App() {
             ></input>
           </div>
 
-          <div className={styles.resetButtonContainer}>
+          <div
+            className={`${styles.resetButtonContainer} ${styles.resetButtonDown}`}
+          >
             <button onClick={handleResetFilters} className={styles.resetButton}>
               reset filters
             </button>

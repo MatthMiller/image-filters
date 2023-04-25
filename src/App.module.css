@@ -28,7 +28,7 @@
     font-size: 1.3125rem;
     line-height: 1.3125rem;
     font-weight: 500;
-    margin-bottom: 35px;
+    /* margin-bottom: 35px; */
     color: #F5F5F5;
 }
 
@@ -74,6 +74,10 @@
     cursor: pointer;
 }
 
+.imageSide {
+    position: relative;
+}
+
 .imageContainer {
     background-color: #000000;
     padding: 20px;
@@ -116,17 +120,50 @@
     display: flex;
     align-items: center;
     gap: 15px;
+    background-color: #000000;
 }
 
-.resetButton:hover,
-.inputFileButton:hover {
-    color: #F5F5F5;
-    border-color: #F5F5F5;
+.downloadButton {
+    margin-top: 15px;
 }
 
+:global(.iconDownload) { transition: 250ms; }
 :global(.iconUpload) { transition: 250ms; }
-.inputFileButton:hover :global(.iconUpload) {
-    fill: #F5F5F5;
+
+@media (pointer: fine) {
+    .resetButton:hover,
+    .inputFileButton:hover {
+        color: #F5F5F5;
+        border-color: #F5F5F5;
+        /* box-shadow: 0 0 0 2px rgba(211, 185, 253, 50%); */
+        
+        color: #000000;
+        background-color: #D6D6D6;
+    }
+
+    .downloadButton:hover :global(.iconDownload),
+    .inputFileButton:hover :global(.iconUpload) {
+        fill: #F5F5F5;
+        fill: #000000;
+    }
+}
+
+@media (pointer: coarse) {
+    .resetButton:active,
+    .inputFileButton:active {
+        color: #F5F5F5;
+        border-color: #F5F5F5;
+        /* box-shadow: 0 0 0 2px rgba(211, 185, 253, 50%); */
+        
+        color: #000000;
+        background-color: #D6D6D6;
+    }
+
+    .downloadButton:active :global(.iconDownload),
+    .inputFileButton:active :global(.iconUpload) {
+        fill: #F5F5F5;
+        fill: #000000;
+    }
 }
 
 .resetButtonContainer { display: flex; place-content: end; }
@@ -136,6 +173,15 @@
     font-family: 'Eczar', sans-serif;
     margin-bottom: 0px;
 }
+
+.resetButtonTopContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.resetButtonTop { display: none; }
 
 @media (max-width: 850px) {
     .titulo {
@@ -152,4 +198,23 @@
     .imageContainer {
         padding: 10px;
     }
+
+    .resetButtonDown { display: none; }
+    .resetButtonTop { display: flex; }
+
+    .downloadButton {
+        margin-top: 15px;
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        background-color: rgba(0, 0, 0, 80%);
+    }
+}
+
+.extendedTitleText { display: block; }
+.collapsedTitleText { display: none; }
+
+@media (max-width: 385px) {
+    .collapsedTitleText { display: block; }
+    .extendedTitleText { display: none; }
 }
